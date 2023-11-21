@@ -17,9 +17,13 @@ public class PlayerController : MonoBehaviour
     
     public float speed = 10f;
     public float jumpForce;
+    public bool canJump;
     public float turnRate;
     public float deaccelerationRate;
     public Vector2 moveDirection;
+    public float coyoteTime = 0.5f;
+    public float currentCoyoteTime;
+    public float jumpCount;
 
     public bool isFacingRight;
     public bool isGrounded;
@@ -33,7 +37,9 @@ public class PlayerController : MonoBehaviour
     public int meleeDamage;
     public LayerMask enemyLayer;
 
-   
+    //Player stats
+    private float maxHealth;
+    private float currentHealth;
 
 
 
@@ -51,12 +57,18 @@ public class PlayerController : MonoBehaviour
     {
         if (Physics2D.OverlapCircle(new Vector2(transform.position.x, transform.position.y - GetComponent<CapsuleCollider2D>().bounds.extents.y), 0.5f, LayerMask.GetMask("Ground")))
         {
-            isGrounded = true;
 
+            currentCoyoteTime = coyoteTime;
+            isGrounded = true;
         }
-        else 
+        else
         {
             isGrounded = false;
+        }
+
+        if (!isGrounded)
+        {
+            currentCoyoteTime -= Time.deltaTime;
         }
 
         GetMoveDirection();
@@ -66,7 +78,7 @@ public class PlayerController : MonoBehaviour
             Move();
         }
 
-        if (Input.GetKey(KeyCode.Space) && isGrounded)
+        if (Input.GetKey(KeyCode.Space) && currentCoyoteTime > 0)
         {
             Jump();
         }
@@ -125,6 +137,7 @@ public class PlayerController : MonoBehaviour
     public void Jump() 
     {
         
+
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         playerAnim.SetTrigger("Jump");
 
