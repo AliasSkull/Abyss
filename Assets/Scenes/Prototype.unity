@@ -1609,7 +1609,7 @@ MonoBehaviour:
   playerAnim: {fileID: 0}
   sprite: {fileID: 0}
   speed: 15
-  jumpForce: 20
+  jumpForce: 30
   dashForce: 20
   canJump: 0
   isMoving: 0
@@ -1631,6 +1631,7 @@ MonoBehaviour:
     m_Bits: 128
   arrowPrefab: {fileID: 2581306332022366165, guid: 14d85f42d1f460a4caa73f786d329b9d, type: 3}
   shootPOS: {fileID: 183577971}
+  shootForce: 25
   currentDashTime: 0
   dashTime: 5
 --- !u!70 &1185069032

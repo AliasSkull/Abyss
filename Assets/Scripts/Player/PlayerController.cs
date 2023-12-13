@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask enemyLayer;
     public GameObject arrowPrefab;
     public GameObject shootPOS;
+    public float shootForce;
 
     //Player stats
     private float maxHealth;
@@ -190,7 +191,14 @@ public class PlayerController : MonoBehaviour
                 case Weapon.Crossbow:
                     GameObject arrow = Instantiate(arrowPrefab, shootPOS.transform.position, Quaternion.identity);
                     Rigidbody2D arrowrb = arrow.GetComponent<Rigidbody2D>();
-                    arrowrb.AddForce(Vector2.right * 15, ForceMode2D.Impulse);
+                    if (isFacingRight)
+                    {
+                        arrowrb.AddForce(Vector2.right * shootForce, ForceMode2D.Impulse);
+                    }
+                    if (!isFacingRight)
+                    {
+                        arrowrb.AddForce(-Vector2.right * shootForce, ForceMode2D.Impulse);
+                    }
                     break;
 
             }
