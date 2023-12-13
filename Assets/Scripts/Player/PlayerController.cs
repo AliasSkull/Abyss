@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 using UnityEngine;
 
 
@@ -15,7 +17,7 @@ public class PlayerController : MonoBehaviour
     public Animator playerAnim;
     public SpriteRenderer sprite;
     
-    public float speed = 10f;
+    public float speed;
     public float jumpForce;
     public bool canJump;
     public float turnRate;
@@ -24,6 +26,7 @@ public class PlayerController : MonoBehaviour
     public float coyoteTime = 0.5f;
     public float currentCoyoteTime;
     public float jumpCount;
+    private float x;
 
     public bool isFacingRight;
     public bool isGrounded;
@@ -41,8 +44,24 @@ public class PlayerController : MonoBehaviour
     private float maxHealth;
     private float currentHealth;
 
+    private InputMapping input = null;
 
 
+    private void Awake()
+    {
+        input = new InputMapping();
+    }
+
+    private void OnEnable()
+    {
+        input.Enable();
+        
+    }
+
+    private void OnDisable()
+    {
+        input.Disable();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -75,7 +94,7 @@ public class PlayerController : MonoBehaviour
 
         if (isGrounded)
         {
-            Move();
+            rb.AddForce(new Vector2(x, this.transform.position.y) * speed, ForceMode2D.Force);
         }
 
         if (Input.GetKey(KeyCode.Space) && currentCoyoteTime > 0)
@@ -99,19 +118,19 @@ public class PlayerController : MonoBehaviour
             playerAnim.SetBool("isRunning", false);
         }
 
-    }
 
-    public void Move()
-    {
-        float x = Input.GetAxis("Horizontal");
-
-        rb.AddForce(new Vector2(x, this.transform.position.y) * speed, ForceMode2D.Force);
-
-    }
-
-    public void Jump() 
-    {
         
+
+    }
+
+    public void OnMovement(InputAction.CallbackContext context)
+    {
+        x = context.ReadValue<Vector2>().x;
+
+    }
+
+    public void OnJump() 
+    {
 
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         playerAnim.SetTrigger("Jump");
