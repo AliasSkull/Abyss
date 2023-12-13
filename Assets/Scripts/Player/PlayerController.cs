@@ -103,34 +103,9 @@ public class PlayerController : MonoBehaviour
 
     public void Move()
     {
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-        {
-            if (rb.velocity.x > 0 && isGrounded)
-            {
-                //quick turn
-                rb.AddForce(Vector2.left * speed * turnRate * Time.deltaTime, ForceMode2D.Impulse);
-            }
-            rb.AddForce(Vector2.left * speed);
+        float x = Input.GetAxis("Horizontal");
 
-
-        }
-
-        else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-        {
-            if (rb.velocity.x < 0 && isGrounded)
-            {
-                //quick turn
-                rb.AddForce(Vector2.right * speed * turnRate * Time.deltaTime, ForceMode2D.Impulse);
-            }
-
-            rb.AddForce(Vector2.right * speed);
-        }
-
-        else if (rb.velocity.x != 0)
-        {
-
-            rb.AddForce(new Vector2(-rb.velocity.x, 0) * deaccelerationRate * Time.deltaTime, ForceMode2D.Impulse);
-        }
+        rb.AddForce(new Vector2(x, this.transform.position.y) * speed, ForceMode2D.Force);
 
     }
 
