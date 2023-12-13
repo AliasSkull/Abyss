@@ -19,13 +19,15 @@ public class PlayerController : MonoBehaviour
     
     public float speed;
     public float jumpForce;
+    public float dashForce;
     public bool canJump;
-    public float turnRate;
-    public float deaccelerationRate;
+    public bool isMoving;
+    public bool canDash;
     public Vector2 moveDirection;
     public float coyoteTime = 0.5f;
     public float currentCoyoteTime;
     public float jumpCount;
+   
     private float x;
 
     public bool isFacingRight;
@@ -39,12 +41,19 @@ public class PlayerController : MonoBehaviour
     public float attackRange;
     public int meleeDamage;
     public LayerMask enemyLayer;
+    public GameObject arrowPrefab;
+    public GameObject shootPOS;
 
     //Player stats
     private float maxHealth;
     private float currentHealth;
 
     private InputMapping input = null;
+
+    [Header("Cool Down Checks")]
+    public float currentDashTime;
+    public float dashTime;
+
 
 
     private void Awake()
@@ -97,16 +106,6 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(new Vector2(x, this.transform.position.y) * speed, ForceMode2D.Force);
         }
 
-        if (Input.GetKey(KeyCode.Space) && currentCoyoteTime > 0)
-        {
-            Jump();
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-
-            Attack();
-        }
 
 
         if (rb.velocity.x >= 0.5 || rb.velocity.x <= -0.5)
@@ -119,8 +118,8 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        
-
+        CheckPlayerMovement();
+        DashCoolDown();
     }
 
     public void OnMovement(InputAction.CallbackContext context)
@@ -129,32 +128,89 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void OnJump() 
+    public void OnJump(InputAction.CallbackContext context) 
     {
+        if (context.performed && isGrounded)
+        {
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            playerAnim.SetTrigger("Jump");
+        }
+    }
 
-        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        playerAnim.SetTrigger("Jump");
+    public void OnDash(InputAction.CallbackContext context)
+    {
+        if (context.performed && canDash && isMoving || !isGrounded)
+        {
+            rb.AddForce(new Vector2(x,0) * dashForce, ForceMode2D.Impulse);
+            currentDashTime = dashTime;
+            canDash = false;
+            Invoke(nameof(OnDashFinish), 0.5f);
+            
+        }
+    }
+
+    public void OnDashFinish() 
+    {
+        rb.velocity = new Vector2(0, 0);
+    
+    }
+
+    public void DashCoolDown() 
+    {
+        if (currentDashTime > 0)
+        {
+            currentDashTime -= Time.deltaTime;
+        }
+
+        if (currentDashTime < 0)
+        {
+            currentDashTime = 0;
+            canDash = true;
+        }
 
     }
 
-    public void Attack() 
+    public void OnAttack(InputAction.CallbackContext context) 
     {
-        switch (activeWeapon)
+        if (context.performed)
         {
-            case Weapon.Sword:
-                //Melee Attack
-                playerAnim.SetTrigger("MeleeAttack1");
-                Collider2D [] enemyColliders = Physics2D.OverlapCircleAll(attackBox.position, attackRange, enemyLayer);
-                foreach (Collider2D enemy in enemyColliders)
-                {
-                    Debug.Log("Hit" + " " + enemy.name + " " + "for" +" " + meleeDamage);
-                    enemy.GetComponent<Enemy>().TakeDamage(meleeDamage);
-                }
-                break;
+            switch (activeWeapon)
+            {
+                case Weapon.Sword:
+                    //Melee Attack
+                    playerAnim.SetTrigger("MeleeAttack1");
+                    Collider2D[] enemyColliders = Physics2D.OverlapCircleAll(attackBox.position, attackRange, enemyLayer);
+                    foreach (Collider2D enemy in enemyColliders)
+                    {
+                        Debug.Log("Hit" + " " + enemy.name + " " + "for" + " " + meleeDamage);
+                        enemy.GetComponent<Enemy>().TakeDamage(meleeDamage);
+                    }
+                    break;
 
-            case Weapon.Crossbow:
-                break;
-        
+                case Weapon.Crossbow:
+                    GameObject arrow = Instantiate(arrowPrefab, shootPOS.transform.position, Quaternion.identity);
+                    Rigidbody2D arrowrb = arrow.GetComponent<Rigidbody2D>();
+                    arrowrb.AddForce(Vector2.right * 15, ForceMode2D.Impulse);
+                    break;
+
+            }
+        }
+    
+    }
+
+    public void OnWeaponChange(InputAction.CallbackContext context) 
+    {
+        if (context.performed)
+        {
+            if (activeWeapon == Weapon.Sword)
+            {
+                activeWeapon = Weapon.Crossbow;
+            }
+
+            if (activeWeapon == Weapon.Crossbow)
+            {
+                activeWeapon = Weapon.Sword;
+            }
         }
     
     }
@@ -195,5 +251,15 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 180f, 0);
         }
     
+    }
+
+    public bool CheckPlayerMovement()
+    {
+        if (rb.velocity.x > 0.5 || rb.velocity.x < -0.5)
+        {
+            return isMoving = true;
+        }
+
+        return isMoving = false;
     }
 }
