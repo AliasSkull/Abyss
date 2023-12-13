@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded;
     public CapsuleCollider2D playerCollider;
     public PlayerLightController lightController;
+    
 
     //Attack
     public Weapon activeWeapon;

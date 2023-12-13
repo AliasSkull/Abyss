@@ -7,6 +7,7 @@ public class EnemyAI : MonoBehaviour
 {
     [Header("Pathfinding")]
     public Transform target;
+    public float playerLightStrength;
     public float activateDistance = 50f;
     public float pathUpdateSeconds = 0.5f;
 
@@ -41,6 +42,9 @@ public class EnemyAI : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //playerLightStrength = target.GetComponent<PlayerLightController>().playerLight.intensity;
+
+
         if (TargetInDistance() && followEnabled)
         {
 
