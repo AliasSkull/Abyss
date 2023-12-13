@@ -4,39 +4,32 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public Rigidbody2D rb;
-
-    public int maxHealth;
+    [Header("Base Info")]
     public int currentHealth;
+    public int maxHealth;
+
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-
-        currentHealth = maxHealth;
+        currentHealth = maxHealth;    
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (currentHealth < 0)
+        {
+            Death();
+        }
     }
 
-    public void TakeDamage(int Damage) 
+    public void TakeDamage(int damage)
     {
-
-        currentHealth -= Damage;
-        if (currentHealth <= 0)
-        { 
-            
-        }
-    
+        currentHealth = currentHealth - damage;
     }
 
     public void Death() 
-    {
-        Destroy(this.gameObject);
+    { 
+    
     }
-
-
 }

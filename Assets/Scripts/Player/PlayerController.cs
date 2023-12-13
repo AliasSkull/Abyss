@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     public float dashForce;
     public bool canJump;
+    public bool isJumping;
     public bool isMoving;
     public bool canDash;
     public Vector2 moveDirection;
@@ -89,6 +90,7 @@ public class PlayerController : MonoBehaviour
 
             currentCoyoteTime = coyoteTime;
             isGrounded = true;
+           
         }
         else
         {
@@ -118,6 +120,7 @@ public class PlayerController : MonoBehaviour
             playerAnim.SetBool("isRunning", false);
         }
 
+        
 
         CheckPlayerMovement();
         DashCoolDown();
@@ -135,19 +138,33 @@ public class PlayerController : MonoBehaviour
         {
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             playerAnim.SetTrigger("Jump");
+        
         }
     }
 
-    public void OnDash(InputAction.CallbackContext context)
+    public void OnDashLeft(InputAction.CallbackContext context)
     {
-        if (context.performed && canDash && isMoving || !isGrounded)
+        if (context.performed && canDash)
         {
-            rb.AddForce(new Vector2(x,0) * dashForce, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.left * dashForce, ForceMode2D.Impulse);
             currentDashTime = dashTime;
             canDash = false;
             Invoke(nameof(OnDashFinish), 0.5f);
             
         }
+    }
+
+    public void OnDashRight(InputAction.CallbackContext context)
+    {
+        if (context.performed && canDash)
+        {
+            rb.AddForce(Vector2.right * dashForce, ForceMode2D.Impulse);
+            currentDashTime = dashTime;
+            canDash = false;
+            Invoke(nameof(OnDashFinish), 0.5f);
+
+        }
+
     }
 
     public void OnDashFinish() 
