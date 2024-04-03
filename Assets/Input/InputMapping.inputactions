@@ -42,9 +42,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Dash",
+                    "name": "Dodge",
                     "type": "Button",
                     "id": "4738f7d4-34d7-4487-aba6-28fe537d75a4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Crouch",
+                    "type": "Button",
+                    "id": "fb00b8c7-0c72-49ab-8441-cfd8888c388e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -56,7 +65,7 @@
                     "name": "AD Movement",
                     "id": "0b8c137e-f7d3-4016-805c-c6992118de44",
                     "path": "2DVector",
-                    "interactions": "Press",
+                    "interactions": "Hold(duration=0.01)",
                     "processors": "",
                     "groups": "",
                     "action": "Movement",
@@ -89,7 +98,7 @@
                     "name": "Joystick",
                     "id": "255d3ab7-4e5f-4755-9279-e2717d237d22",
                     "path": "2DVector",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "processors": "",
                     "groups": "",
                     "action": "Movement",
@@ -187,11 +196,33 @@
                 {
                     "name": "",
                     "id": "156caf0d-70ca-4f87-b2a6-a97158bcf2b2",
-                    "path": "<Keyboard>/leftShift",
+                    "path": "<Keyboard>/a",
+                    "interactions": "MultiTap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dodge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d12b2793-44d9-41d3-b769-9d88d6888217",
+                    "path": "<Keyboard>/d",
+                    "interactions": "MultiTap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dodge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "25f79d12-4a0b-426f-a54c-0624485d63d5",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Dash",
+                    "action": "Crouch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

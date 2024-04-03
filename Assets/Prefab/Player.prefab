@@ -162,7 +162,7 @@ MonoBehaviour:
   maxLightIntensity: 7
   lightDecayTime: 1
   lightSlider: {fileID: 0}
---- !u!1 &7531237938801540318
+--- !u!1 &2942651575037618987
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -170,44 +170,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8237411517988033310}
-  - component: {fileID: 902182857608588485}
-  - component: {fileID: 1535660406103120148}
-  - component: {fileID: 7808287051983818814}
-  - component: {fileID: 5691283591239438519}
-  - component: {fileID: 5431255675760283127}
+  - component: {fileID: 7967765062677976511}
+  - component: {fileID: 7134099128281542734}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8237411517988033310
+--- !u!4 &7967765062677976511
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7531237938801540318}
+  m_GameObject: {fileID: 2942651575037618987}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.07, z: 0}
-  m_LocalScale: {x: 4.623572, y: 4.623572, z: 4.623572}
+  m_LocalPosition: {x: 0, y: -0.035, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5282392082133146120}
-  - {fileID: 8172644776951033271}
-  - {fileID: 213868303287887466}
-  m_Father: {fileID: 0}
+  m_Children: []
+  m_Father: {fileID: 8237411517988033310}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &902182857608588485
+--- !u!212 &7134099128281542734
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7531237938801540318}
+  m_GameObject: {fileID: 2942651575037618987}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -253,6 +246,45 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &7531237938801540318
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8237411517988033310}
+  - component: {fileID: 1535660406103120148}
+  - component: {fileID: 7808287051983818814}
+  - component: {fileID: 5691283591239438519}
+  - component: {fileID: 5431255675760283127}
+  m_Layer: 0
+  m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8237411517988033310
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7531237938801540318}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.07, z: 0}
+  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5282392082133146120}
+  - {fileID: 8172644776951033271}
+  - {fileID: 213868303287887466}
+  - {fileID: 7967765062677976511}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &1535660406103120148
 Rigidbody2D:
   serializedVersion: 4
@@ -293,20 +325,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAnim: {fileID: 0}
-  sprite: {fileID: 0}
-  speed: 14
-  jumpForce: 25
-  dashForce: 20
+  sprite: {fileID: 7134099128281542734}
+  playercollider: {fileID: 0}
+  speed: 10
+  jumpForce: 15
+  dodgeForce: 20
   canJump: 0
   isJumping: 0
   isMoving: 0
-  canDash: 1
+  canDodge: 0
+  isDodging: 0
+  isCrouching: 0
+  isVulnerable: 1
   moveDirection: {x: 0, y: 0}
   coyoteTime: 0.2
   currentCoyoteTime: 0
   jumpCount: 0
   isFacingRight: 0
-  isGrounded: 0
+  onGround: 0
   playerCollider: {fileID: 5691283591239438519}
   lightController: {fileID: 6889492349829694454}
   activeWeapon: 1
@@ -353,7 +389,7 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0048015574, y: 0.043212626}
+  m_Offset: {x: -0.0048015574, y: -0.02}
   m_Size: {x: 0.24633257, y: 0.39357504}
   m_Direction: 0
 --- !u!95 &5431255675760283127

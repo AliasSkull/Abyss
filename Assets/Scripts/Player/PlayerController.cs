@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
-
+using Pathfinding.Util;
 
 public enum Weapon 
 { 
@@ -16,16 +16,20 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     public Animator playerAnim;
     public SpriteRenderer sprite;
+    public CapsuleCollider2D playercollider;
 
     private Vector2 moveVector;
     public float speed;
     public float jumpForce;
-    public float dashForce;
+    public float dodgeForce;
     public bool canJump;
     public bool isJumping;
     public bool isMoving;
-    public bool canDash;
-    public bool isDashing;
+    private bool canMove;
+    public bool canDodge;
+    public bool isDodging;
+    public bool isCrouching;
+    public bool isVulnerable = true;
     public Vector2 moveDirection;
     public float coyoteTime = 0.5f;
     public float currentCoyoteTime;
@@ -34,7 +38,7 @@ public class PlayerController : MonoBehaviour
     private float x;
 
     public bool isFacingRight;
-    public bool isGrounded;
+    public bool onGround;
     public CapsuleCollider2D playerCollider;
     public PlayerLightController lightController;
     
@@ -75,9 +79,10 @@ public class PlayerController : MonoBehaviour
         input.Player.Attack.performed += OnAttackPerformed;
         input.Player.Jump.performed += OnJumpPerformed;
         input.Player.Jump.canceled += OnJumpCancelled;
-        input.Player.Dash.performed += OnDashPerformed;
-        input.Player.Dash.canceled += OnDashCancelled;
-        
+        input.Player.Dodge.performed += OnDodgePerformed;
+        input.Player.Crouch.performed += OnCrouchPerformed;
+        input.Player.Crouch.canceled += OnCrouchCancelled;
+
     }
 
     private void OnDisable()
@@ -89,8 +94,10 @@ public class PlayerController : MonoBehaviour
         input.Player.Attack.performed -= OnAttackPerformed;
         input.Player.Jump.performed -= OnJumpPerformed;
         input.Player.Jump.canceled -= OnJumpCancelled;
-        input.Player.Dash.performed -= OnDashPerformed;
-        input.Player.Dash.canceled -= OnDashCancelled;
+        input.Player.Dodge.performed -= OnDodgePerformed;
+        input.Player.Crouch.performed -= OnCrouchPerformed;
+        input.Player.Crouch.canceled -= OnCrouchCancelled;
+
     }
     // Start is called before the first frame update
     void Start()
@@ -98,35 +105,29 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<CapsuleCollider2D>();
         playerAnim = GetComponent<Animator>();
-        sprite = GetComponent<SpriteRenderer>();
+    
+        canDodge = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Physics2D.OverlapCircle(new Vector2(transform.position.x, transform.position.y - GetComponent<CapsuleCollider2D>().bounds.extents.y), 0.5f, LayerMask.GetMask("Ground")))
-        {
+        isGrounded();
 
-            currentCoyoteTime = coyoteTime;
-            isGrounded = true;
-           
-        }
-        else
-        {
-            isGrounded = false;
-        }
-
-        if (!isGrounded)
+        onGround = isGrounded();
+       
+        if (isGrounded())
         {
             currentCoyoteTime -= Time.deltaTime;
+            canMove = true;
         }
 
         GetMoveDirection();
 
-        if (isGrounded)
+        if (isGrounded() && canMove)
         {
             rb.velocity = moveVector * speed;
-            canJump = true;
+          
         }
 
 
@@ -140,12 +141,25 @@ public class PlayerController : MonoBehaviour
             playerAnim.SetBool("isRunning", false);
         }
 
-       
 
-        
+        if (isDodging)
+        {
+            canMove = false;
+        }
+
+        if (isCrouching)
+        {
+            playercollider.offset = new Vector2(0, -0.08f);
+            playercollider.size = new Vector2(0.24f, 0.0001f);
+        }
+        else 
+        {
+            playercollider.offset = new Vector2(-0.0048015574f, 0.0432126261f);
+            playercollider.size = new Vector2(0.246332571f, 0.393575042f);
+        }
 
         CheckPlayerMovement();
-        DashCoolDown();
+        
     }
 
     private void FixedUpdate()
@@ -157,10 +171,40 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if (isDashing == true)
+        if (isDodging == true)
         {
-            rb.AddForce(moveDirection * dashForce, ForceMode2D.Impulse);
+
+            playerAnim.SetTrigger("Dodge");
+            rb.AddForce(moveDirection * dodgeForce, ForceMode2D.Impulse);
+           
+
         }
+
+    }
+
+    public void OnDodgeStart()
+    {
+        isDodging = false;
+        isVulnerable = false;
+        
+      
+    }
+
+    public void OnDodgeEnd()
+    {
+        isVulnerable = true;
+        StartCoroutine(DodgeCooldown());
+    }
+
+    private bool isGrounded() 
+    {
+        //Gizmos.DrawCi
+        if (isCrouching)
+        {
+            return Physics2D.OverlapCircle(new Vector2(this.transform.position.x, this.transform.position.y - 2f), 1f, LayerMask.GetMask("Ground"));
+        }
+        else
+        { return Physics2D.OverlapCircle(new Vector2(this.transform.position.x, this.transform.position.y + 0.25f), 1f, LayerMask.GetMask("Ground")); }
     }
 
     public void OnMovementPerformed(InputAction.CallbackContext context)
@@ -176,7 +220,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnJumpPerformed(InputAction.CallbackContext context)
     {
-        if (isGrounded)
+        if (context.performed && isGrounded())
         {
             isJumping = true;
         }
@@ -184,37 +228,39 @@ public class PlayerController : MonoBehaviour
 
     public void OnJumpCancelled(InputAction.CallbackContext context)
     {
-        isJumping = false;
-    }
-
-    public void OnDashPerformed(InputAction.CallbackContext context)
-    {
-        if (canDash) { isDashing = true; }
-    }
-
-    public void OnDashCancelled(InputAction.CallbackContext context)
-    {
-        isDashing = false;
-        moveVector = Vector2.zero;
-    
-    }
-
-
-    public void DashCoolDown() 
-    {
-        if (currentDashTime > 0)
+        if (context.canceled && rb.velocity.y > 0f)
         {
-            currentDashTime -= Time.deltaTime;
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
-
-        if (currentDashTime < 0)
-        {
-            currentDashTime = 0;
-            canDash = true;
-        }
-
     }
 
+    public void OnDodgePerformed(InputAction.CallbackContext context)
+    {
+        if (context.performed && canDodge && isGrounded() &&isMoving)
+        {
+            Debug.Log("Dash");
+            isDodging = true;
+            canDodge = false;
+        }
+    }
+
+    public void OnCrouchPerformed(InputAction.CallbackContext context)
+    {
+        isCrouching = true;
+    }
+
+    public void OnCrouchCancelled(InputAction.CallbackContext context)
+    {
+        isCrouching = false;
+    }
+
+    public IEnumerator DodgeCooldown() 
+    {
+
+        yield return new WaitForSeconds(1);
+        canDodge = true;
+    }
+   
     public void OnAttackPerformed(InputAction.CallbackContext context) 
     {
         
