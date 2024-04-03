@@ -16,7 +16,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     public Animator playerAnim;
     public SpriteRenderer sprite;
-    
+
+    private Vector2 moveVector;
     public float speed;
     public float jumpForce;
     public float dashForce;
@@ -67,12 +68,24 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         input.Enable();
+        input.Player.Movement.performed += OnMovementPerformed;
+        input.Player.Movement.canceled += OnMovementCancelled;
+        input.Player.WeaponChange.performed += OnWeaponChange;
+        input.Player.Attack.performed += OnAttackPerformed;
+        input.Player.Jump.performed += OnJumpPerformed;
+        input.Player.Jump.canceled += OnJumpCancelled;
         
     }
 
     private void OnDisable()
     {
         input.Disable();
+        input.Player.Movement.performed -= OnMovementPerformed;
+        input.Player.Movement.canceled -= OnMovementCancelled;
+        input.Player.WeaponChange.performed -= OnWeaponChange;
+        input.Player.Attack.performed -= OnAttackPerformed;
+        input.Player.Jump.performed -= OnJumpPerformed;
+        input.Player.Jump.canceled -= OnJumpCancelled;
     }
     // Start is called before the first frame update
     void Start()
@@ -107,7 +120,8 @@ public class PlayerController : MonoBehaviour
 
         if (isGrounded)
         {
-            rb.AddForce(new Vector2(x, this.transform.position.y) * speed, ForceMode2D.Force);
+            rb.velocity = moveVector * speed;
+            canJump = true;
         }
 
 
@@ -121,58 +135,48 @@ public class PlayerController : MonoBehaviour
             playerAnim.SetBool("isRunning", false);
         }
 
+       
+
         
 
         CheckPlayerMovement();
         DashCoolDown();
     }
 
-    public void OnMovement(InputAction.CallbackContext context)
+    private void FixedUpdate()
     {
-        x = context.ReadValue<Vector2>().x;
-
-    }
-
-    public void OnJump(InputAction.CallbackContext context) 
-    {
-        if (context.performed && isGrounded)
+        if (isJumping == true)
         {
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            playerAnim.SetTrigger("Jump");
-        
+            isJumping = false;
+
         }
     }
 
-    public void OnDashLeft(InputAction.CallbackContext context)
+    public void OnMovementPerformed(InputAction.CallbackContext context)
     {
-        if (context.performed && canDash)
+        moveVector = context.ReadValue<Vector2>();   
+
+    }
+
+    public void OnMovementCancelled(InputAction.CallbackContext context)
+    {
+        moveVector = Vector2.zero;
+    }
+
+    public void OnJumpPerformed(InputAction.CallbackContext context)
+    {
+        if (canJump == true)
         {
-            rb.AddForce(Vector2.left * dashForce, ForceMode2D.Impulse);
-            currentDashTime = dashTime;
-            canDash = false;
-            Invoke(nameof(OnDashFinish), 0.5f);
-            
+            isJumping = true;
         }
     }
 
-    public void OnDashRight(InputAction.CallbackContext context)
+    public void OnJumpCancelled(InputAction.CallbackContext context)
     {
-        if (context.performed && canDash)
-        {
-            rb.AddForce(Vector2.right * dashForce, ForceMode2D.Impulse);
-            currentDashTime = dashTime;
-            canDash = false;
-            Invoke(nameof(OnDashFinish), 0.5f);
-
-        }
-
+        isJumping = false;
     }
 
-    public void OnDashFinish() 
-    {
-        rb.velocity = new Vector2(0, 0);
-    
-    }
 
     public void DashCoolDown() 
     {
@@ -189,10 +193,9 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void OnAttack(InputAction.CallbackContext context) 
+    public void OnAttackPerformed(InputAction.CallbackContext context) 
     {
-        if (context.performed)
-        {
+        
             switch (activeWeapon)
             {
                 case Weapon.Sword:
@@ -220,25 +223,22 @@ public class PlayerController : MonoBehaviour
                     break;
 
             }
-        }
+        
     
     }
 
     public void OnWeaponChange(InputAction.CallbackContext context) 
     {
-        if (context.performed)
-        {
+        
             if (activeWeapon == Weapon.Sword)
             {
                 activeWeapon = Weapon.Crossbow;
             }
-
-            if (activeWeapon == Weapon.Crossbow)
+            else if (activeWeapon == Weapon.Crossbow)
             {
                 activeWeapon = Weapon.Sword;
             }
-        }
-    
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
