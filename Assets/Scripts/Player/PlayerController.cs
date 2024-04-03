@@ -176,7 +176,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnJumpPerformed(InputAction.CallbackContext context)
     {
-        if (canJump == true)
+        if (isGrounded)
         {
             isJumping = true;
         }
@@ -195,6 +195,7 @@ public class PlayerController : MonoBehaviour
     public void OnDashCancelled(InputAction.CallbackContext context)
     {
         isDashing = false;
+        moveVector = Vector2.zero;
     
     }
 
