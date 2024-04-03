@@ -55,27 +55,18 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Dash Left"",
-                    ""type"": ""Button"",
-                    ""id"": ""67b5c00b-dcbd-4c64-b1f4-b2d3522da88a"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Dash Right"",
-                    ""type"": ""Button"",
-                    ""id"": ""0ff71709-3917-4e88-963b-a7c5c939a538"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Weapon Change"",
                     ""type"": ""Button"",
                     ""id"": ""f6d5b504-03c8-471a-88cc-1e15645a1b49"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""4738f7d4-34d7-4487-aba6-28fe537d75a4"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -216,136 +207,15 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""877d0fb1-ecf0-4a3c-87fc-fe8536abb968"",
-                    ""path"": ""OneModifier"",
+                    ""name"": """",
+                    ""id"": ""156caf0d-70ca-4f87-b2a6-a97158bcf2b2"",
+                    ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Dash Right"",
-                    ""isComposite"": true,
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""06a46b1a-3e67-44d7-8e25-4fd2467d7a2d"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dash Right"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""f8a0fb85-3662-4f1c-9c73-f6eb2f6949c6"",
-                    ""path"": ""<Keyboard>/leftCtrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dash Right"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Gamepad"",
-                    ""id"": ""03ead13e-224c-4923-a869-01034469d8f1"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dash Right"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""fafa5a5b-49ed-437c-8673-f061d8f4607a"",
-                    ""path"": ""<Gamepad>/leftStick/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dash Right"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""df138e35-f830-4dae-8f4d-5e03e595f19d"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dash Right"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""43d1a527-a671-4f93-b7d5-6cb5b95d2bbf"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dash Left"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""af75e709-6fb9-4def-ad65-57c782a6b329"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dash Left"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""b0d2a0e7-f306-4981-bc9b-42aca505b775"",
-                    ""path"": ""<Keyboard>/leftCtrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dash Left"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Gamepad"",
-                    ""id"": ""2f72a36e-7aa5-4f69-9562-ac396ea32f5d"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dash Left"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""d97b0b21-16c4-4f0d-9912-3ee8b8050013"",
-                    ""path"": ""<Gamepad>/leftStick/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dash Left"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""a359dba0-c35d-4299-bdc6-caca264fa34c"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dash Left"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -396,9 +266,8 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
-        m_Player_DashLeft = m_Player.FindAction("Dash Left", throwIfNotFound: true);
-        m_Player_DashRight = m_Player.FindAction("Dash Right", throwIfNotFound: true);
         m_Player_WeaponChange = m_Player.FindAction("Weapon Change", throwIfNotFound: true);
+        m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         // Menus
         m_Menus = asset.FindActionMap("Menus", throwIfNotFound: true);
         m_Menus_OpenGameMenu = m_Menus.FindAction("Open Game Menu", throwIfNotFound: true);
@@ -466,9 +335,8 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Attack;
-    private readonly InputAction m_Player_DashLeft;
-    private readonly InputAction m_Player_DashRight;
     private readonly InputAction m_Player_WeaponChange;
+    private readonly InputAction m_Player_Dash;
     public struct PlayerActions
     {
         private @InputMapping m_Wrapper;
@@ -476,9 +344,8 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
-        public InputAction @DashLeft => m_Wrapper.m_Player_DashLeft;
-        public InputAction @DashRight => m_Wrapper.m_Player_DashRight;
         public InputAction @WeaponChange => m_Wrapper.m_Player_WeaponChange;
+        public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -497,15 +364,12 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
-            @DashLeft.started += instance.OnDashLeft;
-            @DashLeft.performed += instance.OnDashLeft;
-            @DashLeft.canceled += instance.OnDashLeft;
-            @DashRight.started += instance.OnDashRight;
-            @DashRight.performed += instance.OnDashRight;
-            @DashRight.canceled += instance.OnDashRight;
             @WeaponChange.started += instance.OnWeaponChange;
             @WeaponChange.performed += instance.OnWeaponChange;
             @WeaponChange.canceled += instance.OnWeaponChange;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -519,15 +383,12 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
-            @DashLeft.started -= instance.OnDashLeft;
-            @DashLeft.performed -= instance.OnDashLeft;
-            @DashLeft.canceled -= instance.OnDashLeft;
-            @DashRight.started -= instance.OnDashRight;
-            @DashRight.performed -= instance.OnDashRight;
-            @DashRight.canceled -= instance.OnDashRight;
             @WeaponChange.started -= instance.OnWeaponChange;
             @WeaponChange.performed -= instance.OnWeaponChange;
             @WeaponChange.canceled -= instance.OnWeaponChange;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -596,9 +457,8 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
-        void OnDashLeft(InputAction.CallbackContext context);
-        void OnDashRight(InputAction.CallbackContext context);
         void OnWeaponChange(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
     public interface IMenusActions
     {

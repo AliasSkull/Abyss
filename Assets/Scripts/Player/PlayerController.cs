@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     public bool isJumping;
     public bool isMoving;
     public bool canDash;
+    public bool isDashing;
     public Vector2 moveDirection;
     public float coyoteTime = 0.5f;
     public float currentCoyoteTime;
@@ -74,6 +75,8 @@ public class PlayerController : MonoBehaviour
         input.Player.Attack.performed += OnAttackPerformed;
         input.Player.Jump.performed += OnJumpPerformed;
         input.Player.Jump.canceled += OnJumpCancelled;
+        input.Player.Dash.performed += OnDashPerformed;
+        input.Player.Dash.canceled += OnDashCancelled;
         
     }
 
@@ -86,6 +89,8 @@ public class PlayerController : MonoBehaviour
         input.Player.Attack.performed -= OnAttackPerformed;
         input.Player.Jump.performed -= OnJumpPerformed;
         input.Player.Jump.canceled -= OnJumpCancelled;
+        input.Player.Dash.performed -= OnDashPerformed;
+        input.Player.Dash.canceled -= OnDashCancelled;
     }
     // Start is called before the first frame update
     void Start()
@@ -151,6 +156,11 @@ public class PlayerController : MonoBehaviour
             isJumping = false;
 
         }
+
+        if (isDashing == true)
+        {
+            rb.AddForce(moveDirection * dashForce, ForceMode2D.Impulse);
+        }
     }
 
     public void OnMovementPerformed(InputAction.CallbackContext context)
@@ -175,6 +185,17 @@ public class PlayerController : MonoBehaviour
     public void OnJumpCancelled(InputAction.CallbackContext context)
     {
         isJumping = false;
+    }
+
+    public void OnDashPerformed(InputAction.CallbackContext context)
+    {
+        if (canDash) { isDashing = true; }
+    }
+
+    public void OnDashCancelled(InputAction.CallbackContext context)
+    {
+        isDashing = false;
+    
     }
 
 
